@@ -1,29 +1,16 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable no-undef */
-module.exports =
- {
- 	titleSlide: {
- 		title: 'string',
- 		text: 'string'
- 	},
- 	mainSlides: [
- 		{
- 			title: 'string',
- 			text: 'string',
- 			image: 'string',
- 			layout: int
- 		},
- 		{
- 			title: 'string',
- 			text: 'string',
- 			image: 'string',
- 			layout: int
- 		},
- 		{
- 			title: 'string',
- 			text: 'string',
- 			image: 'string',
- 			layout: int
- 		}
- 	]
- };
+/* eslint-disable no-unused-vars */
+const OpenAI =  require('openai');
+// eslint-disable-next-line no-undef
+const openai = new OpenAI({apiKey: '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'});
+const receivedData = '"Шановні члени журі, тема мого проекту - створення програми для створення презентацій за допомогою нейромережі. Я завжди намагаюся реалізувати якісь незвичайні проекти, і цей раз не був винятком. Ця тема здалася мені цікавою і захоплюючою, тому я її і обрав Хоча у мене є досвід розробки веб-додатків, файлових серверів, Telegram-ботів та інших. Для мене це був новий досвід, оскільки робота з нейромережами я навіть не уявляв до того, як почав працювати над проектом. Тим не менш, попередній досвід підказував мені, що цей проект буде в моїх силах. І так і вийшло, на один лише код було витрачено 17 годин часу, однак роботу я завершив і залишився повністю задоволений результатом. Я впевнений, що навіть якщо робота не отримає призові місця, вона допоможе мені досягти своєї мрії, тому вже немає жодних жалю і сожалінь у мене не залишилося.';
+async function t (){
+	const textCompletion = await openai.chat.completions.create({
+		messages: [
+		  { role: 'system', content: `${receivedData} \n зроби цій текст більше та зроби його так щоб його можно було вставити в презентацію`, } 
+		],
+		model: 'gpt-4',
+	});
+	console.log(textCompletion.choices[0].message.content);
+}
+t();

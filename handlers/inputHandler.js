@@ -117,7 +117,7 @@ const openAiHandler = async (req, res) => {
         }
         console.log('Изображение успешно сохранено в папку images.');
       });
-
+      console.log('sending main slide text request');
       const textCompletion = await openai.chat.completions.create({
         messages: [
           { role: 'system', content: `напиши текст по теме: ${receivedData}: ${ideas[i]}`, } 
@@ -139,8 +139,7 @@ const openAiHandler = async (req, res) => {
 		console.log('время реквста: ', endDate - startDate);
 
 		
-		// createPresentation(ppData);
-    console.log('\n\n', ppData);
+		createPresentation(ppData);
 		// Отправляем ответ на клиентскую часть после завершения обработки
 		res.status(200).json({ message: 'Завершено', result: 'презентация создана' });
 	} catch (error) {
