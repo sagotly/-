@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>МАН2023</title>
+    <style>
+        body {
+            font-family: 'roboto', sans-serif;
+            text-align: center;
+            margin-top: 30px;
+            background: linear-gradient(to bottom right, #6f6a6a, #fff);
+            background-color: #fff; /* Белый цвет фона в качестве фолбэка */
+            height: 100vh; /* Заполнение всей видимой области экрана */
+            display: flex;
+            flex-direction:column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #333;
+            text-shadow: 1px 1px 2px #ffffff, -1px -1px 2rgb(255, 255, 255)000; /* Обводка текста */
+        }
+
+        button {
+            margin-top: 1%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px; /* Увеличил радиус для более скругленных углов */
+            background-color: #898989; /* Цвет кнопки в более сером оттенке */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #slidesCount{
+            font-weight: 300;
+            display: inline-block; 
+            vertical-align: top; 
+            margin-left: 5px; 
+        }
+        .container {
+            display: flex; /* Используем flexbox для выравнивания элементов на одной строке */
+            align-items: center; /* Выравниваем элементы по вертикали */
+        }
+        
+        input[type='file'] {
+            margin-left: 23px;
+            padding: 10px;
+            transition: box-shadow 0.3s ease;
+        }
+        input[type='file']:hover,
+        input[type='file']:focus {
+            outline: none;
+        }
+        .containerr{
+            display: flex; /* Используем flexbox для выравнивания элементов на одной строке */
+            justify-content:center ;
+            align-items:flex-end; /* Выравниваем элементы по вертикали */
+        }
+        .spacer{
+            width: 5%;
+            height: 95px;
+        }
+        .redirectButton {
+            padding: 5px 7px; 
+        }
+        select {
+            border-radius: 4px;
+            border: 1px solid #aaa;
+        }
+        button:hover {
+            background-color: #777;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        section{
+            display: flex;
+            width: 100%;
+        }
+        section .nth span{
+            position: absolute;
+            height: 7px;
+            width: 7px;
+            margin-left: 49%;
+            margin-top: 5px;
+            background: #fff;
+            border-radius: 50%;
+            transform: rotate(calc(var(--i) * 
+              (360deg / 15))) translateY(24px);
+                        animation: animate 1.5s linear infinite;
+            animation-delay: calc(var(--i) * .1s);
+            opacity: 0;
+            display: none;
+        }
+        .nth.show span {
+            display: inline-block; /* При наличии класса "show" у контейнера .nth, отображаем span элементы */
+        }
+  @keyframes animate {
+   0%{
+     opacity: 20;
+   }
+   100%{
+     opacity: 0;
+   }
+  }
+    </style>
+</head>
+<body>
+    <h1>МАН2023</h1>
+    <input type="file" id="fileInput" name="file" />
+    <div class = "container">
+        <p id="slidesCount">кількість слайдів:</p>
+        <select id="elements" name="element">
+            <option value=" 1">1</option>
+            <option value=" 2">2</option>
+            <option value=" 3">3</option>
+            <option value=" 4">4</option>
+            <option value=" 5">5</option>
+            <option value=" 6">6</option>
+            <option value=" 7">7</option>
+            <option value=" 8">8</option>
+            <option value="несколько">auto</option>
+        </select>
+    </div>
+    <button type="button" onclick="uploadFile()">Відправити</button>
+    <div class="containerr">
+        <button class="redirectButton" onclick="redirectToMainButton()">головна сторiнка</button>
+        <div class="spacer"></div>
+        <button class="redirectButton" onclick="redirectToUrlButton()">Відправити посилання</button>
+    </div>
+    <div class="container">
+        <p id="result"></p>
+    </div>
+    <section>
+        <div class="nth" id="loader">
+          <span style="--i:1;"></span>
+          <span style="--i:2;"></span>
+          <span style="--i:3;"></span>
+          <span style="--i:4;"></span>
+          <span style="--i:5;"></span>
+          <span style="--i:6;"></span>
+          <span style="--i:7;"></span>
+          <span style="--i:8;"></span>
+          <span style="--i:9;"></span>
+          <span style="--i:10;"></span>
+          <span style="--i:11;"></span>
+          <span style="--i:12;"></span>
+          <span style="--i:13;"></span>
+          <span style="--i:14;"></span>
+          <span style="--i:15;"></span>
+        </div>
+      </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function uploadFile() {
+            const loader = document.getElementById('loader');
+            loader.classList.toggle('show');
+            const slidesCount = document.getElementById('elements').value;
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+        
+            if (!file) {
+                alert('Please select a file.');
+                return;
+            }
+        
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('slidesCount', slidesCount)
+        
+            axios.post('/api/file_upload', formData)
+                // .then(response => {
+                //     alert(response.data);
+                // })
+                .then(function (response) {
+                    loader.classList.toggle('show');
+                    document.getElementById('result').textContent = `Результат: ${response.data.result}`;
+                })
+                .catch(function (error) {
+                    // Обработка ошибки
+                    document.getElementById('result').textContent = `Ошибка при обработке данных: ${error}`;
+                });
+                
+        }
+        function redirectToMainButton(){
+            window.location.href = '/api/process_data';
+        }
+        function redirectToUrlButton(){
+            window.location.href = '/api/url_req';
+        }
+    </script>
+</body>
+</html>

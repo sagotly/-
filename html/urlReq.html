@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>МАН2023</title>
+    <style>
+        body {
+            font-family: 'roboto', sans-serif;
+            text-align: center;
+            margin-top: 30px;
+            background: linear-gradient(to bottom right, #6a6a6a, #fff);
+            /* Для браузеров, не поддерживающих градиент, указываем фолбэк цвет */
+            background-color: #fff; /* Белый цвет фона в качестве фолбэка */
+            height: 100vh; /* Заполнение всей видимой области экрана */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #333;
+            text-shadow: 1px 1px 2px #ffffff, -1px -1px 2rgb(255, 255, 255)000; /* Обводка текста */
+        }
+
+        input[type='text'] {
+            padding: 10px;
+            padding-left: 25px;
+            padding-right: 25px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5; /* Немного серый цвет фона */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для эффекта поднятости */
+            transition: box-shadow 0.3s ease;
+        }
+        input[type='text']:hover,
+        input[type='text']:focus {
+            outline: none; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Усиленная тень при наведении */
+        }
+
+        button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px; /* Увеличил радиус для более скругленных углов */
+            background-color: #898989; /* Цвет кнопки в более сером оттенке */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #sendButton{
+            margin-top: 60 px;
+            padding: 10px 20px;
+        }
+        .spacer{
+            width: 5%;
+            height: 75px;
+        }
+        .container {
+            display: flex; /* Используем flexbox для выравнивания элементов на одной строке */
+            justify-content:center ;
+            align-items:flex-end; /* Выравниваем элементы по вертикали */
+        }
+        select {
+            border-radius: 4px;
+            border: 1px solid #aaa;
+        }
+        button:hover {
+            background-color: #777;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        #slidesCount{
+            font-weight: 300;
+            display: inline-block; /* Размещаем элементы на одной строке */
+            vertical-align: top; /* Выравниваем по верхнему краю */
+            margin-right: 5px; /* Добавляем отступ между текстом и селектом */
+        }
+        section{
+            display: flex;
+            width: 100%;
+        }
+        section .nth span{
+            position: absolute;
+            height: 7px;
+            width: 7px;
+            margin-left: 49%;
+            margin-top: 5px;
+            background: #fff;
+            border-radius: 50%;
+            transform: rotate(calc(var(--i) * 
+              (360deg / 15))) translateY(24px);
+                        animation: animate 1.5s linear infinite;
+            animation-delay: calc(var(--i) * .1s);
+            opacity: 0;
+            display: none;
+        }
+        .nth.show span {
+            display: inline-block; /* При наличии класса "show" у контейнера .nth, отображаем span элементы */
+        }
+  @keyframes animate {
+   0%{
+     opacity: 20;
+   }
+   100%{
+     opacity: 0;
+   }
+  }
+    </style>
+</head>
+<body>
+    <p id="copyText" onclick="copyToClipboard()">https://uk.wikipedia.org/wiki/%D0%92%D1%96%D0%BA%D1%96%D0%BF%D0%B5%D0%B4%D1%96%D1%8F</p>
+    <h1>МАН2023</h1>
+    <input type="text" id="inputText" placeholder="посилання на сайт">
+    <button id="sendButton" onclick="sendRequest()">Відправити</button>
+    <p id="result"></p>
+    <section>
+        <div class="nth" id="loader">
+            <span style="--i:1;"></span>
+            <span style="--i:2;"></span>
+            <span style="--i:3;"></span>
+            <span style="--i:4;"></span>
+            <span style="--i:5;"></span>
+            <span style="--i:6;"></span>
+            <span style="--i:7;"></span>
+            <span style="--i:8;"></span>
+            <span style="--i:9;"></span>
+            <span style="--i:10;"></span>
+            <span style="--i:11;"></span>
+            <span style="--i:12;"></span>
+            <span style="--i:13;"></span>
+            <span style="--i:14;"></span>
+            <span style="--i:15;"></span>
+        </div>
+    </section>
+    
+    <div class="container">
+        <button class="redirectButton" onclick="redirectToFileUploadButton()">Відправити файл</button>
+        <div class="spacer"></div>
+        <button class="redirectButton" onclick="redirectToMainButton()">Головна сторінка</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Функция для отправки запроса
+        function sendRequest() {
+            const loader = document.getElementById('loader');
+            loader.classList.toggle('show');
+
+            const inputTopic = document.getElementById('inputText').value;
+            const wikipediaPrefix = 'wikipedia.org/wiki';
+            if (!inputTopic.includes(wikipediaPrefix)) {
+                console.log('      ▼￣＞-――-＜￣▼\n 　　  Ｙ　　　　 Ｙ \n　  /　/　๑⚈ ․̫ ⚈๑)\n 　＼ ｜　 つ　　ヽつ')
+                alert('сайт повинен бути Викiпедiею'); 
+                return;
+            }
+            // Отправка POST-запроса с использованием Axios
+            axios.post('http://localhost:3000/api/url_req', {
+                url: inputTopic,
+            })
+            .then(function (response) {
+                loader.classList.toggle('show');
+                document.getElementById('result').textContent = `Результат: ${response.data.result}`;
+            })
+            .catch(function (error) {
+                // Обработка ошибки
+                document.getElementById('result').textContent = `Ошибка при обработке данных: ${error}`;
+            });
+        }
+
+        function redirectToFileUploadButton(){
+            window.location.href = '/api/file_upload';
+        }
+        function redirectToMainButton(){
+            window.location.href = '/api/process_data';
+        }
+
+        function copyToClipboard() {
+            // Выбираем текстовый элемент
+            var textElement = document.getElementById("copyText");
+
+            // Создаем временный элемент textarea
+            var textArea = document.createElement("textarea");
+            textArea.value = textElement.textContent;
+
+            // Добавляем его в DOM
+            document.body.appendChild(textArea);
+
+            // Выделяем текст в textarea
+            textArea.select();
+
+            // Копируем текст в буфер обмена
+            document.execCommand('copy');
+
+            // Удаляем временный элемент
+            document.body.removeChild(textArea);
+
+            // Можешь добавить визуальное подтверждение, например, изменить текст элемента
+            textElement.textContent = "Текст скопирован!";
+        }
+    </script>
+</body>
+</html>
