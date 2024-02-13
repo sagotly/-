@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>МАН2023</title>
+    <link rel="icon" href="../assets/paiLogoCropped.png" type="image/png">
     <style>
         body {
             font-family: 'roboto', sans-serif;
@@ -48,11 +49,14 @@
             transition: background-color 0.3s ease;
         }
         #sendButton{
-            margin-top: 60 px;
+            margin-top: 40px;
             padding: 10px 20px;
         }
         .spacer{
-            width: 5%;
+            width: 10%;
+            height: 75px;
+        }
+        .spacer{
             height: 75px;
         }
         .container {
@@ -141,7 +145,7 @@
     <div class="container">
         <button class="redirectButton" onclick="redirectToFileUploadButton()">Відправити файл</button>
         <div class="spacer"></div>
-        <button class="redirectButton" onclick="redirectToMainButton()">Головна сторінка</button>
+        <button id="endButton" class="redirectButton" onclick="redirectToMainButton()">Головна сторінка</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>

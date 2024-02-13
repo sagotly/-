@@ -89,25 +89,25 @@ const openAiHandler = async (req, res) => {
           max_tok = 240;
         }
       }
-      // const image = await openai.images.generate({
-      //   model: 'dall-e-3',
-      //   prompt: receivedData,
-      //   n: 1,
-      //   size: size,
-      //   style: 'vivid',
-      //   response_format: 'b64_json'
-      // });
-      // let b64Data = image.data[0].b64_json;
-      // const decodedImage = Buffer.from(b64Data, 'base64');
+      const image = await openai.images.generate({
+        model: 'dall-e-3',
+        prompt: receivedData,
+        n: 1,
+        size: size,
+        style: 'vivid',
+        response_format: 'b64_json'
+      });
+      let b64Data = image.data[0].b64_json;
+      const decodedImage = Buffer.from(b64Data, 'base64');
       // eslint-disable-next-line no-undef
       const imagePath = path.join(__dirname, '..', 'images', `image${i}.jpg`);
-      // fs.writeFile(imagePath, decodedImage, (err) => {
-      //   if (err) {
-      //     console.error('Ошибка при сохранении изображения:', err);
-      //     return;
-      //   }
-      //   console.log('Изображение успешно сохранено в папку images.');
-      // });
+      fs.writeFile(imagePath, decodedImage, (err) => {
+        if (err) {
+          console.error('Ошибка при сохранении изображения:', err);
+          return;
+        }
+        console.log('Изображение успешно сохранено в папку images.');
+      });
       console.log('sending main slide text request');
       const textCompletion = await openai.chat.completions.create({
         messages: [

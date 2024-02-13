@@ -73,7 +73,7 @@ const fileReqHandler = async(req, res)=> {
 		console.log(`file content: ${fileContent}\nslide count: ${slidesCount}`);
 		const authorCompletion = await openai.chat.completions.create({
 			messages: [
-				{ role: 'system', content: `ответь в 2 слова. Кто автор данного произведения? \n ${fileContent}` },
+				{ role: 'system', content: `відповиси у 2 слова, хто автор цього творення \n ${fileContent}` },
 			],
 			model: 'gpt-3.5-turbo-1106',
 		});
@@ -87,7 +87,7 @@ const fileReqHandler = async(req, res)=> {
 		if (tsTitle.length > 40) {
 			const TitleCompletion = await openai.chat.completions.create({
 				messages: [
-					{ role: 'system', content: `дай короткое название этому произведению \n ${fileContent}` },
+					{ role: 'system', content: `дай коротку назву даному твореню \n ${fileContent}` },
 				],
 				model: 'gpt-3.5-turbo-1106',
 			});
@@ -101,28 +101,30 @@ const fileReqHandler = async(req, res)=> {
 			mainSlides: []
 		};
 		
-		const themesPrompt = `раздели текст в низу в ковычках на ${slidesCount} частей, имя и описание части должны разделяться двоеточием (':')части должны четко просматриваться в тексте, описания быть как можно более приближенны к основному тексту, также описания должні біть как минимум длинной в 2 предложения\n`,
-		descriptionPrompt1 = 'тебе дано описисание:  ',
-		conclusionPrompt = 'напиши короткий вывод для презентации о тексте ниже который подводит итоги и красиво завершает презентацию, стиль текста должен быть нейтральным\n',
-		descriptionPrompt2 = 'дополни это описание еще на 2 абзаца в докладном стиле, и используй как источник основной рассказ который находиться в ковычках снизу \n',
+		const themesPrompt = `розділи цей текст на  ${slidesCount} частин, ім'я та опис частини повинні розділятися двокрапкою (':') части должны четко просматриваться в тексте, частини повинні чітко переглядатися в тексті, описи бути якомога більш наближені до основного тексту, також описи повинні бути як мінімум довжиною в 2 пропозиції\n`,
+		descriptionPrompt1 = 'тобі дан опис:  ',
+		conclusionPrompt = 'напиши короткий висновок для презентації про текст нижче який підбиває підсумки і красиво завершує презентацію, стиль тексту має бути нейтральним',
+		descriptionPrompt2 = 'доповни цей опис ще на 1 абзац у доповідному стилі, та використовуй як джерело основне оповідання що знаходитись у лапках знизу \n',
 		partsArray = await parseThemesRequest(themesPrompt, fileContent);
 		let multiplier = 0;
 
 		console.log('длина массива: ' + partsArray.length);
 		for (let i = 0; i < partsArray.length; i++){
 			let layout = Math.floor(Math.random() * 2 + multiplier) + 1;
-			// let size;
+			let size;
 			let max_tok;
 			if (multiplier >= 0.5) layout = 2; multiplier = 0; 
 			if (multiplier <= -0.5) layout = 1; multiplier = 0;
 			switch (layout){
 				case 1: {
+					size = '1024x1792';
 					console.log('layout = 1');
 					multiplier = multiplier + 0.1;
 					max_tok = 700;
 					break;
 				}
 				case 2:{
+					size = '1792x1024';
 					console.log('layout = 2');
 					multiplier = multiplier + 0.1;
 				}
@@ -130,7 +132,7 @@ const fileReqHandler = async(req, res)=> {
 			console.log('multiplier is: ', multiplier);
 			console.log('Sending main slide text request');
 			let msTextComplitionPrompt = descriptionPrompt1 + partsArray[i].name + ':' + partsArray[i].desc + descriptionPrompt2 + fileContent;
-			if (layout == 2) msTextComplitionPrompt = 'увеличь данный текст на 2 предложения: ' + partsArray[i].desc;
+			if (layout == 2) msTextComplitionPrompt = 'збільши цей текст на 2 речення: ' + partsArray[i].desc;
 			console.log('msTextComplitionPrompt: ', msTextComplitionPrompt);
 			const mainSlideTextCompletion = await openai.chat.completions.create({
 				messages: [
@@ -143,10 +145,10 @@ const fileReqHandler = async(req, res)=> {
 			const msText = parseSentence(mainSlideTextCompletion.choices[0].message.content);
 			
 			const image = await openai.images.generate({
-				model: 'dall-e-2',
+				model: 'dall-e-3',
 				prompt: partsArray[i].desc,
 				n: 1,
-				size: '256x256',
+				size: size,
 				style: 'vivid',
 				quality: 'standard',
 				response_format: 'b64_json'

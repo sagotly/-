@@ -32,7 +32,7 @@ const urlReqHandler = async (req, res) => {
     const groupedPArray = [];
     const tSTextCompletion = await openai.chat.completions.create({
       messages: [
-        { role: 'system', content: `опиши эту тему 3-6 словами: ${firstHeading}` },
+        { role: 'system', content: `опиши цю тему 3-6 словами ${firstHeading}` },
       ],
       model: 'gpt-3.5-turbo-0125',
     });
@@ -98,11 +98,6 @@ const urlReqHandler = async (req, res) => {
           sentCount = '1-2';
           break;
         }
-        case 4:{
-          size = '1024x1792';
-          sentCount = '4-5';
-          break;
-        }
       }
       let mSTitle = '';
       if (startDiv.text().includes('[ред. | ред. код]')){
@@ -110,29 +105,29 @@ const urlReqHandler = async (req, res) => {
       } else {
         mSTitle = startDiv.text();
       }
-      // const image = await openai.images.generate({
-      //   model: 'dall-e-2',
-      //   prompt: startDiv,
-      //   n: 1,
-      //   size: size,
-      //   style: 'vivid',
-      //   quality: 'standard',
-      //   response_format: 'b64_json'
-      // });
-      // let b64Data = image.data[0].b64_json;
-      // const decodedImage = Buffer.from(b64Data, 'base64');
+      const image = await openai.images.generate({
+        model: 'dall-e-3',
+        prompt: mSTitle,
+        n: 1,
+        size: size,
+        style: 'vivid',
+        quality: 'standard',
+        response_format: 'b64_json'
+      });
+      let b64Data = image.data[0].b64_json;
+      const decodedImage = Buffer.from(b64Data, 'base64');
       //  eslint-disable-next-line no-undef
       const imagePath = path.join(__dirname, '..', 'images', `image${i}.jpg`);
-      // fs.writeFile(imagePath, decodedImage, (err) => {
-      //   if (err) {
-      //     console.error('Ошибка при сохранении изображения:', err);
-      //     return;
-      //   }
-      //   console.log('Изображение успешно сохранено в папку images.');
-      // });
+      fs.writeFile(imagePath, decodedImage, (err) => {
+        if (err) {
+          console.error('Ошибка при сохранении изображения:', err);
+          return;
+        }
+        console.log('Изображение успешно сохранено в папку images.');
+      });
       const mSTextCompletion = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: `перепеши текст ниже в ${sentCount} коротких предложениях, твоя задача сделать это информативно, так чтобы получилось засунуть все данные которые только можно, также старайся делать прдложения короткими\n${resultPString}` },
+          { role: 'system', content: `перпеши текст низиче в ${sentCount} у коротких реченнях, твоя задача зробити це інформативно, так щоб вийшло засунути усі дані які тількі можливо, также намагайся зробити речення короткими\n${resultPString}` },
         ],
         model: 'gpt-3.5-turbo-0125',
       });
