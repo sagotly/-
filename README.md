@@ -9,7 +9,7 @@ App that allows you to generate AI based from your prompt
 - OpenAi Api
 - Express
 ## Getting started
-- [Get your openAi API key](https://platform.openai.com/api-keys) and put it into .env file
-- run `npm i`
-- run `node index.js`
-- enjoy ;0
+1. [Get your openAi API key](https://platform.openai.com/api-keys) and put it into .env file
+2. run `npm i`
+3. run `node index.js`
+4. enjoy ;0
