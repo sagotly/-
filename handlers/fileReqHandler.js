@@ -7,7 +7,7 @@ const parseSentence = require('../utils/parseSentence');
 const createPresentation = require('../utils/createPresentation');
 const pdf = require('pdf-parse');
 // eslint-disable-next-line no-undef
-const openai = new OpenAI({apiKey: process.env.API_KEY});
+const openai = new OpenAI(/*{apiKey: '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'}*/);
 
 let counter =0;
 async function parseThemesRequest(themesPrompt, fileContent) {

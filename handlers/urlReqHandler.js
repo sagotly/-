@@ -5,7 +5,7 @@ const path = require('path');
 const createPresentation = require('../utils/createPresentation');
 const OpenAI =  require('openai');
 // eslint-disable-next-line no-undef
-const openai = new OpenAI({apiKey: process.env.API_KEY});
+const openai = new OpenAI(/*{apiKey: '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'}*/);
 const axios = require('axios');
 const cheerio = require('cheerio');
 const Buffer = require('Buffer');

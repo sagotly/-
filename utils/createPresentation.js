@@ -1,5 +1,6 @@
 const pptxgen = require('pptxgenjs');
 const sanitizeFilePath = require('./cleanPath');
+const path = require('path');
 function createPresentation(data){
 	const pptx = new pptxgen();
 	
@@ -34,7 +35,9 @@ function createPresentation(data){
 	const footerSlide = pptx.addSlide();
 	footerSlide.addText('this presentation and all of the content inside it has been created by AI, therefore be careful with the information given', {w:'100%', h: '100%', align: 'center', color: '363636', fontSize: 10});
 	const fileName = sanitizeFilePath(data.titleSlide.title);
-	pptx.writeFile(`presentations\\презентація_${fileName}`, (error) => {
+	// eslint-disable-next-line no-undef
+	const presPath = path.join(__dirname, '..', 'presentations', `презентація_${fileName}`);
+	pptx.writeFile(presPath, (error) => {
 		if (error) {
 			console.log('ERROR WHILE SAVING PRES: ', error);
 		} else {
