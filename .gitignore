@@ -2,5 +2,7 @@ node_modules/
 .env
 images/*
 presentations/*
+!images/
+!presentations/
 tests/
 .git
