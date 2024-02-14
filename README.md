@@ -1,5 +1,5 @@
 # preachAI
-App that allows you to generate AI based from your prompt
+App that allows you to generate AI based presentations from your prompt
 ## Features
 - create presentations from text prompt
 - create presentations from text file <sub>(only txt and pdf)</sub>
