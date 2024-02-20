@@ -1,6 +1,25 @@
 const pptxgen = require('pptxgenjs');
 const sanitizeFilePath = require('./cleanPath');
 const path = require('path');
+/**
+ * Represents data structure for presentation.
+ * @typedef {Object} PpData
+ * @property {Object} titleSlide - Object representing the title slide.
+ * @property {string} titleSlide.title - The title of the title slide.
+ * @property {string} titleSlide.text - The text of the title slide.
+ * @property {Array<Object>} mainSlides - Array of objects representing main slides.
+ * @property {string} mainSlides.title - The title of a main slide.
+ * @property {string} mainSlides.text - The text of a main slide.
+ * @property {string} mainSlides.image - The path to the image for a main slide.
+ * @property {string} mainSlides.layout - The layout of a main slide (as a string or int).
+ */
+
+/**
+ * Creates a presentation based on the provided data.
+ * 
+ * @param {PpData} data - The data structure for the presentation.
+ * @returns {void}
+ */
 function createPresentation(data){
 	const pptx = new pptxgen();
 	

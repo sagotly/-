@@ -1,7 +1,12 @@
 const path  = require('path');
-
+/**
+ * GET handler for url request html page
+ * 
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 const getUrlReqHandler = (req, res) =>{
-	// Отправляем HTML-страницу при обращении к /page
 	// eslint-disable-next-line no-undef
 	const dirPath = path.join(__dirname, '..', 'html', 'urlReq.html');
 	res.sendFile(dirPath);
