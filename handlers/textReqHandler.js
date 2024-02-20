@@ -77,7 +77,7 @@ async function getIdeas (input){
  * 
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
- * @returns {ppData} - A promise that resolves to the response object.
+ * @returns {PpData} - A promise that resolves to the response object.
  * @throws {Error} - If an error occurs during the request handling.
  */
 const openAiHandler = async (req, res) => {
